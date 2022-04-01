@@ -54,7 +54,7 @@ public class Main {
             long chatId = chat.id;
 
             if (chatId == -1001766138888L) {
-                System.out.println(message);
+                System.out.println(message + " " + chatId);
                 List<String> cities = Arrays.asList("м_Київ", "Вінницька_область", "Дніпропетровська_область", "Рівненська_область");
                 cities.forEach(c -> {
                     if (message.contains(c)) {
