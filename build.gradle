@@ -12,11 +12,12 @@ ext {
 }
 repositories {
     mavenCentral()
-    maven { url "https://mvn.mchv.eu/repository/mchv/" }
+    maven { url "https://mvn.mchv.eu/repository/mchv/"}
 }
 dependencies {
     implementation platform('it.tdlight:tdlight-java-bom:2.8.1.2')
 
+    implementation 'com.coreoz:wisp:2.2.2'
     implementation 'it.tdlight:tdlight-java'
     implementation 'it.tdlight:tdlight-natives-linux-amd64'
 }

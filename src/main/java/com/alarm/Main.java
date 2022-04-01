@@ -1,12 +1,20 @@
 package com.alarm;
 
+import com.coreoz.wisp.Scheduler;
+import com.coreoz.wisp.schedule.Schedules;
 import it.tdlight.client.*;
 import it.tdlight.common.Init;
 import it.tdlight.common.utils.CantLoadLibrary;
 import it.tdlight.jni.TdApi;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     private static SimpleTelegramClient client;
@@ -32,6 +40,18 @@ public class Main {
         client.addUpdateHandler(TdApi.UpdateNewMessage.class, Main::onUpdateNewMessage);
 
         client.start(authenticationData);
+
+        Scheduler scheduler = new Scheduler();
+
+        scheduler.schedule(
+                () -> sendMessage(rawoochatId, "10:00 - Всем доброе утро, утренняя перекличка"),
+                Schedules.executeAt("10:00")
+        );
+
+        scheduler.schedule(
+                () -> sendMessage(rawoochatId, "20:00 - Вечерняя перекличка. Всем хорошего вечера и спокойной ночи"),
+                Schedules.executeAt("20:00")
+        );
 
         client.waitForExit();
     }
@@ -89,5 +109,5 @@ public class Main {
             System.out.println("Logging out");
         }
     }
+
 }
-//
