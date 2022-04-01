@@ -52,10 +52,9 @@ public class Main {
             TdApi.Chat chat = chatIdResult.get();
             String chatName = chat.title;
             long chatId = chat.id;
-            System.out.println(chatName);
 
             if (chatId == -1001766138888L) {
-                System.out.println(message + " " + chatName + " " + chatId);
+                System.out.println(message);
                 List<String> cities = Arrays.asList("м_Київ", "Вінницька_область", "Дніпропетровська_область", "Рівненська_область");
                 cities.forEach(c -> {
                     if (message.contains(c)) {
