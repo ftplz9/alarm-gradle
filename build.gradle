@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id "application"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+apply plugin : "java"
+ext {
+    javaMainClass = "com.alarm.Main"
+}
+repositories {
+    mavenCentral()
+    maven { url "https://mvn.mchv.eu/repository/mchv/" }
+}
+dependencies {
+    implementation platform('it.tdlight:tdlight-java-bom:2.8.1.2')
+
+    implementation 'it.tdlight:tdlight-java'
+    implementation 'it.tdlight:tdlight-natives-linux-amd64'
+}
+
+test {
+    useJUnitPlatform()
+}
+task runWithExec(type: Exec) {
+    dependsOn build
+    group = "Execution"
+    description = "Run the main class with ExecTask"
+    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), javaMainClass
+}
