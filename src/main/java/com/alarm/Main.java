@@ -73,8 +73,11 @@ public class Main {
             String chatName = chat.title;
             long chatId = chat.id;
 
-            if (chatId == -1001766138888L) {
+            if (chatId == rawoochatId) {
                 System.out.println(message);
+            }
+
+            if (chatId == -1001766138888L) {
                 List<String> cities = Arrays.asList("м_Київ", "Вінницька_область",
                         "Дніпропетровська_область", "Рівненська_область", "Київська_область");
 
