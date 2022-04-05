@@ -70,7 +70,6 @@ public class Main {
 
         client.send(new TdApi.GetChat(update.message.chatId), chatIdResult -> {
             TdApi.Chat chat = chatIdResult.get();
-            String chatName = chat.title;
             long chatId = chat.id;
 
             if (chatId == rawoochatId) {
@@ -83,6 +82,14 @@ public class Main {
 
                 cities.forEach(c -> {
                     if (message.contains(c)) {
+                        switch (c) {
+                            case "м_Київ":
+                                String str = message.concat("\n").concat("@Perv1t1n")
+                                        .concat(" ").concat("@alexman03")
+                                        .concat(" ").concat("@ftplz");
+                                sendMessage(rawoochatId, str);
+                                break;
+                        }
                         sendMessage(rawoochatId, message);
                     }
                 });
