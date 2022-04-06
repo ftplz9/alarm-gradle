@@ -89,8 +89,10 @@ public class Main {
                                         .concat(" ").concat("@ftplz");
                                 sendMessage(rawoochatId, str);
                                 break;
+                            default:
+                                sendMessage(rawoochatId, message);
                         }
-                        sendMessage(rawoochatId, message);
+
                     }
                 });
             }
