@@ -85,8 +85,7 @@ public class Main {
                         switch (c) {
                             case "м_Київ":
                                 String str = message.concat("\n").concat("@Perv1t1n")
-                                        .concat(" ").concat("@alexman03")
-                                        .concat(" ").concat("@ftplz");
+                                        .concat(" ").concat("@alexman03");
                                 sendMessage(rawoochatId, str);
                                 break;
                             default:
