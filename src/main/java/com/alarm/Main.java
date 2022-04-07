@@ -72,8 +72,8 @@ public class Main {
             TdApi.Chat chat = chatIdResult.get();
             long chatId = chat.id;
 
-            if (chatId == rawoochatId) {
-                System.out.println(message);
+            if (chatId == rawoochatId && message.equalsIgnoreCase("/status")) {
+                sendMessage(rawoochatId, "OK");
             }
 
             if (chatId == -1001766138888L) {
