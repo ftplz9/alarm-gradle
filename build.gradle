@@ -26,7 +26,7 @@ dependencies {
 //    useJUnitPlatform()
 //}
 
-task stage(dependsOn: ['build', 'clean'])
+task stage(dependsOn: ['build', 'runWithExec'])
 
 task runWithExec(type: Exec) {
     dependsOn build
