@@ -26,9 +26,11 @@ dependencies {
 //    useJUnitPlatform()
 //}
 
-//task runWithExec(type: Exec) {
-//    dependsOn build
-//    group = "Execution"
-//    description = "Run the main class with ExecTask"
-//    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), javaMainClass
-//}
+task stage(dependsOn: ['build', 'clean'])
+
+task runWithExec(type: Exec) {
+    dependsOn build
+    group = "Execution"
+    description = "Run the main class with ExecTask"
+    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), javaMainClass
+}
