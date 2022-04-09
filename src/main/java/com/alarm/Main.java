@@ -68,6 +68,11 @@ public class Main {
             message = String.format("(%s)", messageContent.getClass().getSimpleName());
         }
 
+        client.send(new TdApi.GetChatHistory(-1001766138888L, 1L, 10, 10, false), res -> {
+            System.out.println(res.get().totalCount);
+            System.out.println(Arrays.toString(res.get().messages));
+        });
+
         client.send(new TdApi.GetChat(update.message.chatId), chatIdResult -> {
             TdApi.Chat chat = chatIdResult.get();
             long chatId = chat.id;
