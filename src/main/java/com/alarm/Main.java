@@ -63,86 +63,87 @@ public class Main {
         var messageContent = update.message.content;
 
         String message;
+        int time = update.message.date;
         if (messageContent instanceof TdApi.MessageText messageText) {
             message = messageText.text.text;
         } else {
             message = String.format("(%s)", messageContent.getClass().getSimpleName());
         }
 
+        if ((System.currentTimeMillis() / 1000L) - 300 <= time) {
+            client.send(new TdApi.GetChat(update.message.chatId), chatIdResult -> {
+                TdApi.Chat chat = chatIdResult.get();
+                long chatId = chat.id;
+
+                if (chatId == rawoochatId && message.equalsIgnoreCase("/status")) {
+                    System.out.println("Executing status...");
+                    List<AlarmDto> alarms = new ArrayList<>();
+                    client.send(new TdApi.GetChatHistory(-1001766138888L, 0, 0, 100, false), res1 -> {
+                        System.out.println(res1.error());
+                        System.out.println(res1.get());
+                        alarms.addAll(filterList(res1.get()));
+                        client.send(new TdApi.GetChatHistory(-1001766138888L, alarms.get(alarms.size() - 1).getId(), 0, 100, false), res2 -> {
+                            alarms.addAll(filterList(res2.get()));
+                            client.send(new TdApi.GetChatHistory(-1001766138888L, alarms.get(alarms.size() - 1).getId(), 0, 100, false), res3 -> {
+                                alarms.addAll(filterList(res3.get()));
+                                HashMap<String, AlarmDto> map = new HashMap<>();
+
+                                Collections.reverse(alarms);
+
+                                alarms.forEach(e -> {
+                                    map.put(e.getCity(), e);
+                                });
+
+                                StringBuilder resMessage = new StringBuilder();
+
+                                String green = "\uD83D\uDFE2";
+                                String red = "\uD83D\uDD34";
+                                String yellow = "\uD83D\uDFE1";
+
+                                map.forEach((k, v) -> {
+                                    String city = k.replace("_", " ");
+
+                                    String msg = "unknown";
+
+                                    if (v.getText().contains("Відбій") && v.getText().contains("увагу")) {
+                                        msg = yellow;
+                                    } else if (v.getText().contains("Відбій")) {
+                                        msg = green;
+                                    } else if (v.getText().contains("Повітряна")) {
+                                        msg = red;
+                                    }
+
+                                    resMessage.append(city).append(" ").append(msg).append("\n");
+                                });
+                                sendMessage(rawoochatId, resMessage.toString());
 
 
-        client.send(new TdApi.GetChat(update.message.chatId), chatIdResult -> {
-            TdApi.Chat chat = chatIdResult.get();
-            long chatId = chat.id;
-
-            if (chatId == rawoochatId && message.equalsIgnoreCase("/status")) {
-
-                List<AlarmDto> alarms = new ArrayList<>();
-                client.send(new TdApi.GetChatHistory(-1001766138888L, 0, 0, 100, false), res1 -> {
-                    alarms.addAll(filterList(res1.get()));
-                    client.send(new TdApi.GetChatHistory(-1001766138888L, alarms.get(alarms.size() - 1).getId(), 0, 100, false), res2 -> {
-                        alarms.addAll(filterList(res2.get()));
-                        client.send(new TdApi.GetChatHistory(-1001766138888L, alarms.get(alarms.size() - 1).getId(), 0, 100, false), res3 -> {
-                            alarms.addAll(filterList(res3.get()));
-                            HashMap<String, AlarmDto> map = new HashMap<>();
-
-                            Collections.reverse(alarms);
-
-                            alarms.forEach(e -> {
-                                map.put(e.getCity(), e);
                             });
-
-                            StringBuilder resMessage = new StringBuilder();
-
-                            String green = "\uD83D\uDFE2";
-                            String red = "\uD83D\uDD34";
-                            String yellow = "\uD83D\uDFE1";
-
-                            map.forEach((k, v) -> {
-                                String city = k.replace("_", " ");
-
-                                String msg = "unknown";
-
-                                if (v.getText().contains("Відбій") && v.getText().contains("увагу")) {
-                                    msg = yellow;
-                                } else if (v.getText().contains("Відбій")) {
-                                    msg = green;
-                                } else if (v.getText().contains("Повітряна")) {
-                                    msg = red;
-                                }
-
-                                resMessage.append(city).append(" ").append(msg).append("\n");
-                            });
-                            sendMessage(rawoochatId, resMessage.toString());
-
 
                         });
-
                     });
-                });
-            }
+                }
+                System.out.println("Status executed.");
 
-            if (chatId == -1001766138888L) {
-//                List<String> cities = Arrays.asList("м_Київ", "Вінницька_область",
-//                        "Дніпропетровська_область", "Рівненська_область", "Київська_область");
+                if (chatId == -1001766138888L) {
+                    Arrays.stream(City.values()).forEach(c -> {
+                        if (message.contains(c.cityName)) {
+                            switch (c.cityName) {
+                                case "м_Київ":
+                                    String str = message.concat("\n").concat("@Perv1t1n")
+                                            .concat(" ").concat("@alexman03")
+                                            .concat(" ").concat("@ftplz");
+                                    sendMessage(rawoochatId, str);
+                                    break;
+                                default:
+                                    sendMessage(rawoochatId, message);
+                            }
 
-                Arrays.stream(City.values()).forEach(c -> {
-                    if (message.contains(c.cityName)) {
-                        switch (c.cityName) {
-                            case "м_Київ":
-                                String str = message.concat("\n").concat("@Perv1t1n")
-                                        .concat(" ").concat("@alexman03")
-                                        .concat(" ").concat("@ftplz");
-                                sendMessage(rawoochatId, str);
-                                break;
-                            default:
-                                sendMessage(rawoochatId, message);
                         }
-
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
     }
 
     private static void sendMessage(long chatId, String message) {
@@ -187,5 +188,4 @@ public class Main {
 
         return res;
     }
-
 }
