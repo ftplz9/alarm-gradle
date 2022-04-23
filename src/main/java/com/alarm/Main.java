@@ -128,17 +128,7 @@ public class Main {
                 if (chatId == -1001766138888L) {
                     Arrays.stream(City.values()).forEach(c -> {
                         if (message.contains(c.cityName)) {
-                            switch (c.cityName) {
-                                case "м_Київ":
-                                    String str = message.concat("\n").concat("@Perv1t1n")
-                                            .concat(" ").concat("@alexman03")
-                                            .concat(" ").concat("@ftplz");
-                                    sendMessage(rawoochatId, str);
-                                    break;
-                                default:
-                                    sendMessage(rawoochatId, message);
-                            }
-
+                            sendMessage(rawoochatId, message);
                         }
                     });
                 }
