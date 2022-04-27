@@ -42,17 +42,17 @@ public class Main {
 
         client.start(authenticationData);
 
-        Scheduler scheduler = new Scheduler();
-
-        scheduler.schedule(
-                () -> sendMessage(rawoochatId, "10:00 - Всем доброе утро, утренняя перекличка"),
-                Schedules.executeAt("10:00")
-        );
-
-        scheduler.schedule(
-                () -> sendMessage(rawoochatId, "20:00 - Вечерняя перекличка. Всем хорошего вечера и спокойной ночи"),
-                Schedules.executeAt("20:00")
-        );
+//        Scheduler scheduler = new Scheduler();
+//
+//        scheduler.schedule(
+//                () -> sendMessage(rawoochatId, "10:00 - Всем доброе утро, утренняя перекличка"),
+//                Schedules.executeAt("10:00")
+//        );
+//
+//        scheduler.schedule(
+//                () -> sendMessage(rawoochatId, "20:00 - Вечерняя перекличка. Всем хорошего вечера и спокойной ночи"),
+//                Schedules.executeAt("20:00")
+//        );
 
         client.waitForExit();
     }
